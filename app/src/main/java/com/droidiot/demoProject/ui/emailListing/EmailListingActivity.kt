@@ -58,7 +58,7 @@ class EmailListingActivity : AppCompatActivity() {
     private fun setupSearch() {
         view.svEmailList.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                emailListingAdapter.filter.filter(query)
+                viewModel.getEmailListFiltered(query?:"")
                 return false
 
             }
@@ -73,6 +73,29 @@ class EmailListingActivity : AppCompatActivity() {
 
     private fun setupDataObserver() {
         viewModel.responseListData.observe(this, Observer {
+            when (it.status) {
+                Status.LOADING -> {
+                    updateUiState(false, "Loading")
+                }
+                Status.SUCCESS -> {
+                    //hide loading
+                    emailListingAdapter.updateList(it.data)
+                    if (emailListingAdapter.itemCount <= 0) {
+                        updateUiState(false, "No Data to Show")
+                    } else {
+                        updateUiState(true, null)
+                    }
+                }
+                Status.ERROR -> {
+                    updateUiState(false, it.errorMessage)
+                }
+                else -> {
+                    updateUiState(false, "Processing....")
+                }
+            }
+
+        })
+        viewModel.filterListData.observe(this, Observer {
             when (it.status) {
                 Status.LOADING -> {
                     updateUiState(false, "Loading")

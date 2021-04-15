@@ -28,9 +28,9 @@ class EmailListingAdapter(
 
         fun bind(emailItem: EmailModel) {
             Glide.with(ctx)
-                .load(emailItem.sender.picture)
+                .load(emailItem.sender?.picture)
                 .into(senderImage)
-            senderName.text = "${emailItem.sender.first_name} ${emailItem.sender.last_name}"
+            senderName.text = "${emailItem.sender?.first_name} ${emailItem.sender?.last_name}"
             emailMessage.text = emailItem.message
             emailTime.text = emailItem.time
         }
@@ -71,7 +71,7 @@ class EmailListingAdapter(
                     val filterPattern = constraint.toString().toLowerCase()
                     for (item in originalList) {
                         val name =
-                            "${item.sender.first_name?.toLowerCase()} ${item.sender.last_name?.toLowerCase()}"
+                            "${item.sender?.first_name?.toLowerCase()} ${item.sender?.last_name?.toLowerCase()}"
                         if (name.contains(filterPattern))
                             filteredList.add(item)
                     }

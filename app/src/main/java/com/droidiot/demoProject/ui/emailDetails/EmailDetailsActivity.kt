@@ -24,11 +24,11 @@ class EmailDetailsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initDependency()
-        val emailItem:EmailModel = intent.getSerializableExtra(PARAM_EMAIL_ITEM) as EmailModel
+        val emailItem: EmailModel = intent.getParcelableExtra<EmailModel>(PARAM_EMAIL_ITEM)!!
         Glide.with(this)
-            .load(emailItem.sender.picture)
+            .load(emailItem.sender?.picture)
             .into(view.ivSender)
-        view.tvSenderName.text = "${emailItem.sender.first_name} ${emailItem.sender.last_name}"
+        view.tvSenderName.text = "${emailItem.sender?.first_name} ${emailItem.sender?.last_name}"
         view.tvMessage.text = emailItem.message
         view.tvTime.text = emailItem.time
     }

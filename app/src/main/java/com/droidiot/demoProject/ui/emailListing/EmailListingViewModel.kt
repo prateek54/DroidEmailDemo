@@ -28,7 +28,6 @@ class EmailListingViewModel(
             disposable.add(
                 dataManager.getEmailList()
                     .observeOn(scheduleProvider.ui())
-                    .delay(4, TimeUnit.SECONDS)
                     .subscribeOn(scheduleProvider.io())
                     .subscribe({ listResponse ->
                         responseListData.postSuccess(listResponse)
